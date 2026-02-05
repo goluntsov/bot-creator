@@ -23,7 +23,7 @@ Telegram → API Gateway → Cloud Function → YandexGPT Responses API
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/goluntsov/bot-creator
 cd blueprints-agent-deploy
 
 # Run the setup wizard
