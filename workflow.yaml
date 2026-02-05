@@ -1,0 +1,87 @@
+# Yandex Cloud Workflow для Telegram бота
+# Этот workflow позволяет добавить сложную логику обработки сообщений
+
+yawl: "0.1"
+start: receive_message
+
+steps:
+  receive_message:
+    title: "Получение сообщения"
+    input: ${input}
+    output:
+      chat_id: ${input.body.message.chat.id}
+      message_text: ${input.body.message.text}
+      user_id: ${input.body.message.from.id}
+    next: check_command
+
+  check_command:
+    title: "Проверка команды"
+    switch:
+      - condition: ${message_text == "/start"}
+        next: send_welcome
+      - condition: ${message_text == "/help"}
+        next: send_help
+      - default:
+          next: process_with_ai
+
+  send_welcome:
+    title: "Отправка приветствия"
+    httpCall:
+      url: https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+      method: POST
+      body:
+        chat_id: ${chat_id}
+        text: |
+          👋 Привет! Я AI-ассистент на базе Yandex Cloud.
+          
+          Доступные команды:
+          /start - Начать работу
+          /help - Помощь
+          
+          Просто напиши мне сообщение!
+        parse_mode: Markdown
+    next: end
+
+  send_help:
+    title: "Отправка справки"
+    httpCall:
+      url: https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+      method: POST
+      body:
+        chat_id: ${chat_id}
+        text: |
+          📚 *Справка*
+          
+          Я умею отвечать на ваши вопросы с помощью AI.
+          Просто напишите мне любое сообщение!
+        parse_mode: Markdown
+    next: end
+
+  process_with_ai:
+    title: "Обработка через AI"
+    # Вызываем Cloud Function для обработки через AI
+    functionCall:
+      functionId: ${AI_FUNCTION_ID}
+      input:
+        chat_id: ${chat_id}
+        message: ${message_text}
+    output:
+      ai_response: ${output.response}
+    next: send_ai_response
+
+  send_ai_response:
+    title: "Отправка ответа AI"
+    httpCall:
+      url: https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+      method: POST
+      body:
+        chat_id: ${chat_id}
+        text: ${ai_response}
+        parse_mode: Markdown
+    next: end
+
+  end:
+    title: "Завершение"
+    return:
+      status: "ok"
+

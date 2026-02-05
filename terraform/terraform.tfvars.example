@@ -1,0 +1,12 @@
+# Пример файла переменных для Terraform
+# Скопируйте в terraform.tfvars и заполните значения
+#
+# Получить folder_id: yc config get folder-id
+# Создать API Key: yc iam api-key create --service-account-name <имя> --description "Bot API key"
+# Telegram токен: создать бота через @BotFather
+
+folder_id            = ""    # ID каталога Yandex Cloud (yc config get folder-id)
+telegram_bot_token   = ""    # Токен от @BotFather
+yandex_cloud_api_key = ""    # API Key Yandex Cloud
+yandex_cloud_project_id = "" # ID проекта (обычно совпадает с folder_id)
+assistant_prompt_id  = ""    # ID агента/промпта AI Assistant
