@@ -5,7 +5,7 @@ An interactive CLI tool for creating and deploying AI-powered Telegram bots on Y
 ## Features
 
 - **Interactive Setup Wizard** — step-by-step bot creation with guided prompts
-- **YandexGPT Integration** — use AI Agents from AI Studio or YandexGPT models directly
+- **Yandex AI Studio Integration** — use AI Agents from AI Studio or YandexGPT models directly
 - **Conversation Memory** — persistent dialog context via Yandex Object Storage (S3)
 - **Serverless Deployment** — runs on Yandex Cloud Functions with automatic scaling
 - **Zero Infrastructure Management** — automated resource creation (S3 buckets, service accounts, IAM roles)
