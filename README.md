@@ -1,4 +1,4 @@
-# Telegram Bot Builder for Yandex Cloud
+# Telegram Bot Builder for Yandex AI Studio
 
 An interactive CLI tool for creating and deploying AI-powered Telegram bots on Yandex Cloud serverless infrastructure.
 
