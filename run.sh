@@ -113,6 +113,11 @@ setup_python() {
 setup_yc_cli() {
     print_step "Проверка Yandex Cloud CLI..."
     
+    # Добавляем YC в PATH, если он уже был установлен ранее, но терминал не перезапускался
+    if [ -d "$HOME/yandex-cloud/bin" ]; then
+        export PATH="$HOME/yandex-cloud/bin:$PATH"
+    fi
+    
     if ! command -v yc &>/dev/null; then
         print_warn "Yandex Cloud CLI не установлен"
         echo ""
@@ -149,9 +154,15 @@ setup_yc_cli() {
         echo ""
         echo "  Вам понадобится:"
         echo "    1. Аккаунт Yandex (yandex.ru)"
-        echo "    2. Платёжный аккаунт в Yandex Cloud (есть бесплатный грант)"
+        echo "    2. Платёжный аккаунт в Yandex Cloud"
         echo ""
         print_link "https://yandex.cloud/ru/docs/cli/quickstart#initialize"
+        echo ""
+        echo -e "  ${CYAN}Сейчас запустится настройка (yc init). Что нужно будет сделать:${NC}"
+        echo "  1. Перейдите по ссылке, получите OAuth-токен и вставьте его."
+        echo "  2. Выберите облако (Cloud) — обычно [1]."
+        echo "  3. Выберите каталог (Folder) — обычно [1] default."
+        echo "  4. На вопрос о Compute zone можно ответить 'n' (нет)."
         echo ""
         echo "  Запускаю настройку..."
         echo ""

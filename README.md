@@ -19,47 +19,52 @@ Telegram → API Gateway → Cloud Function → YandexGPT Responses API
                          Object Storage (conversation memory)
 ```
 
-## Quick Start
+## Быстрый старт
 
 ```bash
-# Clone the repository
+# Клонируем репозиторий
 git clone https://github.com/goluntsov/bot-creator
 cd bot-creator
 
-# Run the setup wizard
+# Запускаем мастер настройки
 ./run.sh
 ```
 
-The wizard will guide you through:
-1. Python environment setup (virtual environment + dependencies)
-2. Yandex Cloud CLI installation and authentication
-3. Service account creation with required IAM roles
-4. Bot configuration (Telegram token, AI agent/model, features)
-5. Deployment to Yandex Cloud Functions
+Мастер настройки проведет вас через все шаги:
+1. Выберите пункт **1) 🚀 Начальная настройка (YC CLI + сервисный аккаунт)**
+   - Скрипт сам установит Yandex Cloud CLI (если его нет)
+   - Попросит перейти по ссылке и скопировать OAuth-токен
+   - Предложит выбрать облако и каталог (обычно нужно просто нажимать Enter)
+   - Автоматически создаст сервисный аккаунт и выдаст ему нужные права
+2. Выберите пункт **2) 🆕 Создать нового бота**
+   - Введите токен от Telegram (получите у @BotFather)
+   - Введите API-ключ Yandex Cloud (ссылка на создание будет в терминале)
+   - Выберите нужные функции (память диалогов, меню и т.д.)
+3. Бот будет автоматически развернут в Yandex Cloud Functions!
 
-## Interactive Menu
+## Интерактивное меню
 
 ```
-1) 🚀 Initial Setup (YC CLI + service account)
-2) 🆕 Create a new bot
-3) 📋 Help: how to get API keys
-4) ⚙️  Reconfigure YC account
-5) 🔧 Developer mode (debug)
-6) ❌ Exit
+1) 🚀 Начальная настройка (YC CLI + сервисный аккаунт)
+2) 🆕 Создать нового бота
+3) 📋 Справка по получению ключей
+4) ⚙️  Перенастроить YC аккаунт
+5) 🔧 Режим разработчика (debug)
+6) ❌ Выход
 ```
 
-## Prerequisites
+## Требования
 
-### Yandex Cloud Account
+### Аккаунт Yandex Cloud
 
-1. Create an account at [console.yandex.cloud](https://console.yandex.cloud)
-2. Set up a billing account (free trial available with grants)
+1. Создайте аккаунт на [console.yandex.cloud](https://console.yandex.cloud)
+2. Настройте платежный аккаунт (доступен бесплатный грант для новых пользователей)
 
-### Telegram Bot Token
+### Токен Telegram Бота
 
-1. Open [@BotFather](https://t.me/BotFather) in Telegram
-2. Send `/newbot` and follow the instructions
-3. Copy the token (format: `123456789:ABC...`)
+1. Откройте [@BotFather](https://t.me/BotFather) в Telegram
+2. Отправьте `/newbot` и следуйте инструкциям
+3. Скопируйте токен (формат: `123456789:ABC...`)
 
 ### Python 3.8+
 
@@ -67,92 +72,92 @@ The wizard will guide you through:
 python3 --version
 ```
 
-On Debian/Ubuntu systems, you may also need to install the `venv` package:
+На системах Debian/Ubuntu может потребоваться установить пакет `venv`:
 ```bash
 sudo apt update
 sudo apt install python3-venv
 ```
 
-## Project Structure
+## Структура проекта
 
 ```
 bot-creator/
-├── run.sh               # 👈 Entry point — run this
-├── create-bot.py        # Interactive bot creator (Python)
-├── config.local.example # Debug credentials template
-├── bots/                # Generated bot projects (created on first run)
-├── src/                 # Bot code template
+├── run.sh               # 👈 Точка входа — запускайте этот файл
+├── create-bot.py        # Интерактивный скрипт на Python
+├── config.local.example # Шаблон для локальных ключей (debug)
+├── bots/                # Сгенерированные проекты ботов
+├── src/                 # Шаблон кода бота
 │   └── main.py
-├── terraform/           # IaC for deployment (alternative method)
+├── terraform/           # IaC для развертывания (альтернативный метод)
 │   └── main.tf
 └── .cursor/
-    └── mcp.json         # MCP integration for YC documentation
+    └── mcp.json         # MCP интеграция для документации YC
 ```
 
-## What Gets Created
+## Что создается
 
-When you create a bot, the wizard generates a complete project:
+При создании бота скрипт генерирует готовый проект:
 
 ```
 bots/my-telegram-bot/
 ├── src/
-│   └── main.py          # Bot code (customized based on your choices)
-│   └── requirements.txt # Python dependencies
-├── deploy.sh            # One-click deployment script
-├── .env                 # Environment variables (your secrets)
-├── .env.example         # Template for sharing
+│   └── main.py          # Код бота (настроенный под ваш выбор)
+│   └── requirements.txt # Python зависимости
+├── deploy.sh            # Скрипт для деплоя в один клик
+├── .env                 # Переменные окружения (ваши секреты)
+├── .env.example         # Шаблон для передачи проекта
 ├── .gitignore
 └── README.md
 ```
 
-## Bot Features
+## Функции бота
 
-Choose features during creation:
+Выбираются во время создания:
 
-| Feature | Description |
+| Функция | Описание |
 |---------|-------------|
-| 💾 **Dialog Memory** | Persist conversation context across messages using S3 |
-| 🔄 **Agent Selection** | Allow users to switch between multiple AI agents |
-| 📊 **Status Command** | Show dialog statistics and current agent |
-| 🎨 **Custom Menu** | Interactive keyboard with quick actions |
+| 💾 **Память диалогов** | Сохранение контекста беседы с помощью S3 Object Storage |
+| 🔄 **Выбор агента** | Возможность переключаться между разными AI агентами |
+| 📊 **Статус** | Отображение статистики диалога и текущего агента |
+| 🎨 **Кастомное меню** | Интерактивная клавиатура с быстрыми действиями |
 
-## AI Configuration
+## Настройка AI
 
-### Option 1: AI Agents (Recommended)
+### Вариант 1: AI Агенты (Рекомендуется)
 
-Create agents in [Yandex AI Studio](https://console.yandex.cloud/folders/<folder>/ai-studio/prompts):
-- Configure system prompts, temperature, and tools
-- Get the agent ID (format: `fvt...`)
-- The bot will use the Responses API for stateful conversations
+Создайте агентов в [Yandex AI Studio](https://console.yandex.cloud/folders/<folder>/ai-studio/prompts):
+- Настройте системный промпт, температуру и инструменты
+- Получите ID агента (формат: `fvt...`)
+- Бот будет использовать Responses API для сохранения контекста
 
-### Option 2: Direct Model Access
+### Вариант 2: Прямой доступ к моделям
 
-Use YandexGPT models directly:
+Используйте модели YandexGPT напрямую:
 - YandexGPT Pro 5
 - YandexGPT Pro 5.1 (RC)
 - YandexGPT Lite
 
-## Manual Deployment
+## Ручное развертывание
 
-If you prefer manual setup over the wizard:
+Если вы предпочитаете ручную настройку вместо мастера:
 
-### 1. Install Yandex Cloud CLI
+### 1. Установка Yandex Cloud CLI
 
 ```bash
 curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
 yc init
 ```
 
-### 2. Create Service Account
+### 2. Создание сервисного аккаунта
 
 ```bash
-# Get folder ID
+# Получить ID каталога
 yc config get folder-id
 
-# Create service account
+# Создать сервисный аккаунт
 yc iam service-account create --name telegram-bot-sa
 
-# Assign roles
+# Назначить роли
 SA_ID=$(yc iam service-account get telegram-bot-sa --format json | jq -r '.id')
 FOLDER_ID=$(yc config get folder-id)
 
@@ -163,110 +168,110 @@ yc resource-manager folder add-access-binding $FOLDER_ID \
 yc resource-manager folder add-access-binding $FOLDER_ID \
     --role storage.editor --subject serviceAccount:$SA_ID
 
-# Create API key
+# Создать API-ключ
 yc iam api-key create --service-account-name telegram-bot-sa
 ```
 
-### 3. Configure Terraform
+### 3. Настройка Terraform
 
 ```bash
 cd terraform
 cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your values
+# Отредактируйте terraform.tfvars, добавив свои значения
 ```
 
-### 4. Deploy
+### 4. Развертывание
 
 ```bash
 terraform init
 terraform apply
 ```
 
-### 5. Set Webhook
+### 5. Установка Webhook
 
 ```bash
 curl -X POST "https://api.telegram.org/bot<TOKEN>/setWebhook?url=<FUNCTION_URL>"
 ```
 
-## Environment Variables
+## Переменные окружения
 
-| Variable | Description |
+| Переменная | Описание |
 |----------|-------------|
-| `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather |
-| `YANDEX_CLOUD_API_KEY` | API key for AI services |
-| `YANDEX_CLOUD_FOLDER` | Yandex Cloud folder ID |
-| `S3_BUCKET` | Object Storage bucket for dialog state |
-| `AWS_ACCESS_KEY_ID` | S3 static access key |
-| `AWS_SECRET_ACCESS_KEY` | S3 secret key |
-| `AGENTS_JSON` | JSON map of agents: `{"agent_id": "Agent Name"}` |
+| `TELEGRAM_BOT_TOKEN` | Токен бота от @BotFather |
+| `YANDEX_CLOUD_API_KEY` | API-ключ для AI сервисов |
+| `YANDEX_CLOUD_FOLDER` | ID каталога Yandex Cloud |
+| `S3_BUCKET` | Бакет Object Storage для состояния диалогов |
+| `AWS_ACCESS_KEY_ID` | Статический ключ доступа S3 |
+| `AWS_SECRET_ACCESS_KEY` | Секретный ключ S3 |
+| `AGENTS_JSON` | JSON словарь агентов: `{"agent_id": "Имя Агента"}` |
 
-## Debug Mode
+## Режим разработчика (Debug)
 
-For development, use pre-configured credentials:
+Для разработки используйте заранее настроенные ключи:
 
 ```bash
-# Create config from template
+# Создайте конфиг из шаблона
 cp config.local.example config.local
 
-# Edit with your test credentials
+# Впишите свои тестовые ключи
 nano config.local
 
-# Run in debug mode (menu option 5)
+# Запустите в режиме отладки (пункт меню 5)
 ./run.sh
 ```
 
-The `config.local` file is git-ignored and contains your personal API keys for testing.
+Файл `config.local` добавлен в gitignore и содержит ваши личные API-ключи для тестирования.
 
-## Useful Commands
+## Полезные команды
 
 ```bash
-# View function logs
+# Просмотр логов функции
 yc serverless function logs <function-name> --follow
 
-# Check webhook status
+# Проверка статуса вебхука
 curl "https://api.telegram.org/bot<TOKEN>/getWebhookInfo"
 
-# Remove webhook
+# Удаление вебхука
 curl "https://api.telegram.org/bot<TOKEN>/deleteWebhook"
 
-# List functions
+# Список функций
 yc serverless function list
 ```
 
-## Troubleshooting
+## Решение проблем
 
-### Bot not responding
+### Бот не отвечает
 
-1. Check webhook: `curl "https://api.telegram.org/bot<TOKEN>/getWebhookInfo"`
-2. View logs: `yc serverless function logs <function-name>`
-3. Verify environment variables in function settings
+1. Проверьте вебхук: `curl "https://api.telegram.org/bot<TOKEN>/getWebhookInfo"`
+2. Посмотрите логи: `yc serverless function logs <function-name>`
+3. Проверьте переменные окружения в настройках функции
 
-### AI errors
+### Ошибки AI
 
-1. Verify `YANDEX_CLOUD_API_KEY` is valid
-2. Check that the AI agent exists in the console
-3. Review quotas in Yandex Cloud
+1. Убедитесь, что `YANDEX_CLOUD_API_KEY` валиден
+2. Проверьте, существует ли AI агент в консоли
+3. Проверьте квоты в Yandex Cloud
 
-### S3 errors
+### Ошибки S3
 
-1. Verify bucket exists: `yc storage bucket list`
-2. Check `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-3. Ensure service account has `storage.editor` role
+1. Проверьте существование бакета: `yc storage bucket list`
+2. Проверьте `AWS_ACCESS_KEY_ID` и `AWS_SECRET_ACCESS_KEY`
+3. Убедитесь, что у сервисного аккаунта есть роль `storage.editor`
 
-## Security Notes
+## Безопасность
 
-- Never commit `.env` or `config.local` files
-- Rotate API keys periodically
-- Use separate service accounts for production and development
-- The `.gitignore` is pre-configured to exclude sensitive files
+- Никогда не коммитьте файлы `.env` или `config.local`
+- Периодически меняйте (ротируйте) API-ключи
+- Используйте разные сервисные аккаунты для продакшена и разработки
+- Файл `.gitignore` уже настроен на исключение конфиденциальных файлов
 
-## Contributing
+## Участие в разработке
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+1. Сделайте форк репозитория
+2. Создайте ветку для фичи
+3. Внесите изменения
+4. Отправьте pull request
 
-## License
+## Лицензия
 
 MIT.
