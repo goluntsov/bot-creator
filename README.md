@@ -66,16 +66,17 @@ cd bot-creator
 2. Отправьте `/newbot` и следуйте инструкциям
 3. Скопируйте токен (формат: `123456789:ABC...`)
 
-### Python 3.8+
+### Python 3.8+ и утилита zip
 
 ```bash
 python3 --version
+zip --version
 ```
 
-На системах Debian/Ubuntu может потребоваться установить пакет `venv`:
+На системах Debian/Ubuntu может потребоваться установить пакеты `venv` и `zip`:
 ```bash
 sudo apt update
-sudo apt install python3-venv
+sudo apt install python3-venv zip
 ```
 
 ## Структура проекта
