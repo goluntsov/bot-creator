@@ -232,7 +232,7 @@ class BotCreator:
         
         console.print("[dim]  AI Агент — это предварительно настроенный промпт в Yandex Cloud.[/]")
         console.print("[dim]  Можно использовать готового агента (нужен ID) или выбрать модель напрямую.[/]")
-        self.print_link("https://yandex.cloud/ru/docs/foundation-models/concepts/assistant")
+        self.print_link("https://aistudio.yandex.ru/docs/ru/ai-studio/concepts/agents/text-agents.html")
         console.print()
         
         use_agents = questionary.confirm(

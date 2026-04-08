@@ -105,6 +105,27 @@ setup_python() {
     else
         print_ok "Зависимости в порядке"
     fi
+    
+    # Проверка zip (нужен для деплоя)
+    if ! command -v zip &>/dev/null; then
+        print_warn "Утилита zip не найдена. Она нужна для деплоя функций."
+        echo ""
+        read -p "  Установить zip автоматически? [Y/n] " install_zip
+        if [[ "$install_zip" =~ ^[Nn]$ ]]; then
+            print_error "Установка отменена. Деплой может не сработать."
+        else
+            print_info "Устанавливаю zip..."
+            if command -v apt &>/dev/null; then
+                sudo apt update && sudo apt install -y zip
+            elif command -v yum &>/dev/null; then
+                sudo yum install -y zip
+            elif command -v brew &>/dev/null; then
+                brew install zip
+            else
+                print_error "Не удалось определить пакетный менеджер. Установите zip вручную."
+            fi
+        fi
+    fi
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -347,7 +368,7 @@ show_credentials_help() {
     echo -e "  ${BOLD}5. AI Agent ID${NC}"
     echo "     Консоль → AI Studio → Агенты → Создать агента"
     echo "     Или используйте модель напрямую без агента"
-    print_link "https://yandex.cloud/ru/docs/ai-studio/operations/agents/create"
+    print_link "https://aistudio.yandex.ru/docs/ru/ai-studio/concepts/agents/text-agents.html"
     echo ""
     echo -e "${CYAN}───────────────────────────────────────────────────────────────${NC}"
 }

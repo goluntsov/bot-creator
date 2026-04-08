@@ -129,6 +129,7 @@ bots/my-telegram-bot/
 - Настройте системный промпт, температуру и инструменты
 - Получите ID агента (формат: `fvt...`)
 - Бот будет использовать Responses API для сохранения контекста
+- Подробнее: [Текстовые агенты в AI Studio](https://aistudio.yandex.ru/docs/ru/ai-studio/concepts/agents/text-agents.html)
 
 ### Вариант 2: Прямой доступ к моделям
 
