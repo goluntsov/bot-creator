@@ -741,7 +741,23 @@ yc serverless function allow-unauthenticated-invoke "$NAME-handler"
 URL=$(yc serverless function get "$NAME-handler" --format json | grep -o '"http_invoke_url": "[^"]*"' | cut -d'"' -f4)
 
 echo "🔗 Устанавливаю вебхук..."
-curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook?url=$URL" | grep -q '"ok":true' && echo "✅ Готово! $URL" || echo "❌ Ошибка вебхука"
+if curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook?url=$URL" | grep -q '"ok":true'; then
+    echo "✅ Вебхук установлен!"
+    
+    # Получаем информацию о боте, чтобы вывести ссылку
+    BOT_INFO=$(curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getMe")
+    BOT_USERNAME=$(echo "$BOT_INFO" | grep -o '"username":"[^"]*"' | cut -d'"' -f4)
+    
+    if [ -n "$BOT_USERNAME" ]; then
+        echo ""
+        echo "🎉 Бот успешно задеплоен и готов к работе!"
+        echo "👉 Перейдите по ссылке: https://t.me/$BOT_USERNAME"
+    else
+        echo "✅ Готово! $URL"
+    fi
+else
+    echo "❌ Ошибка установки вебхука"
+fi
 '''
         with open(path, "w") as f:
             f.write(content)
