@@ -310,8 +310,12 @@ assign_sa_roles() {
     yc resource-manager folder add-access-binding "$FOLDER_ID" \
         --role storage.editor \
         --subject "serviceAccount:$SA_ID" 2>/dev/null || true
+        
+    yc resource-manager folder add-access-binding "$FOLDER_ID" \
+        --role serverless.functions.invoker \
+        --subject "serviceAccount:$SA_ID" 2>/dev/null || true
     
-    print_ok "Роли назначены: ai.languageModels.user, ai.assistants.editor, storage.editor"
+    print_ok "Роли назначены: ai.languageModels.user, ai.assistants.editor, storage.editor, serverless.functions.invoker"
 }
 
 # ─────────────────────────────────────────────────────────────────────────────

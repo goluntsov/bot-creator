@@ -168,6 +168,8 @@ yc resource-manager folder add-access-binding $FOLDER_ID \
     --role ai.assistants.editor --subject serviceAccount:$SA_ID
 yc resource-manager folder add-access-binding $FOLDER_ID \
     --role storage.editor --subject serviceAccount:$SA_ID
+yc resource-manager folder add-access-binding $FOLDER_ID \
+    --role serverless.functions.invoker --subject serviceAccount:$SA_ID
 
 # Создать API-ключ
 yc iam api-key create --service-account-name telegram-bot-sa

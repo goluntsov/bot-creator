@@ -781,7 +781,7 @@ fi
         name = self.config.get("project_name", "bot")
         folder_id = self.config.get("folder_id")
         bucket = f"{name}-state-{int(time.time())}"
-        sa = f"{name}-s3-sa"
+        sa = f"{name}-s3-sa-{int(time.time())}"
         
         try:
             # Бакет
