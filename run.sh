@@ -140,7 +140,9 @@ setup_yc_cli() {
     print_ok "Yandex Cloud CLI найден"
     
     # Проверка авторизации
-    if ! yc config get folder-id &>/dev/null 2>&1; then
+    FOLDER_ID=$(yc config get folder-id 2>/dev/null || echo "")
+    
+    if [ -z "$FOLDER_ID" ]; then
         print_warn "YC CLI не настроен"
         echo ""
         echo -e "  ${BOLD}Первоначальная настройка Yandex Cloud${NC}"
@@ -155,9 +157,11 @@ setup_yc_cli() {
         echo ""
         yc init
         echo ""
+        
+        # Обновляем FOLDER_ID после init
+        FOLDER_ID=$(yc config get folder-id 2>/dev/null || echo "")
     fi
     
-    FOLDER_ID=$(yc config get folder-id 2>/dev/null || echo "")
     if [ -n "$FOLDER_ID" ]; then
         print_ok "YC авторизован (folder: $FOLDER_ID)"
     fi
