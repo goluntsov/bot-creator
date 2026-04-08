@@ -67,6 +67,12 @@ The wizard will guide you through:
 python3 --version
 ```
 
+On Debian/Ubuntu systems, you may also need to install the `venv` package:
+```bash
+sudo apt update
+sudo apt install python3-venv
+```
+
 ## Project Structure
 
 ```
