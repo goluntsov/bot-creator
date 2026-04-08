@@ -112,6 +112,19 @@ class BotCreator:
             style=custom_style
         ).ask()
 
+    def print_link(self, url: str):
+        """Выводит ссылку и пытается её открыть"""
+        console.print(f"[dim]  📖 {url}[/]")
+        
+        # Попытка открыть ссылку автоматически
+        try:
+            if shutil.which("xdg-open"):
+                subprocess.Popen(["xdg-open", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            elif shutil.which("open"):
+                subprocess.Popen(["open", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+
     def collect_bot_info(self):
         """Сбор информации о боте"""
         console.print("\n[bold cyan]📝 Информация о боте[/]\n")
@@ -139,7 +152,8 @@ class BotCreator:
             console.print("[dim]  Получите токен у @BotFather в Telegram:[/]")
             console.print("[dim]  1. Откройте @BotFather → /newbot → введите имя[/]")
             console.print("[dim]  2. Скопируйте токен (формат: 123456789:ABC...)[/]")
-            console.print("[dim]  📖 https://core.telegram.org/bots#botfather[/]\n")
+            self.print_link("https://t.me/BotFather")
+            console.print()
             
             self.config["telegram_token"] = questionary.text(
                 "Telegram Bot Token:",
@@ -169,7 +183,8 @@ class BotCreator:
             if not default_folder:
                 console.print("[dim]  Folder ID — идентификатор каталога в Yandex Cloud[/]")
                 console.print("[dim]  Найти: Консоль → Выбрать каталог → Скопировать ID[/]")
-                console.print("[dim]  📖 https://yandex.cloud/ru/docs/resource-manager/operations/folder/get-id[/]\n")
+                self.print_link("https://yandex.cloud/ru/docs/resource-manager/operations/folder/get-id")
+                console.print()
             
             self.config["folder_id"] = questionary.text(
                 "Yandex Cloud Folder ID:",
@@ -186,7 +201,8 @@ class BotCreator:
         else:
             console.print("[dim]  API-ключ нужен для доступа к AI API от имени сервисного аккаунта[/]")
             console.print("[dim]  Создать: Консоль → IAM → Сервисные аккаунты → Ваш SA → Создать API-ключ[/]")
-            console.print("[dim]  📖 https://yandex.cloud/ru/docs/iam/operations/api-key/create[/]\n")
+            self.print_link("https://yandex.cloud/ru/docs/iam/operations/api-key/create")
+            console.print()
             
             self.config["api_key"] = questionary.text(
                 "Yandex Cloud API Key:",
@@ -216,7 +232,8 @@ class BotCreator:
         
         console.print("[dim]  AI Агент — это предварительно настроенный промпт в Yandex Cloud.[/]")
         console.print("[dim]  Можно использовать готового агента (нужен ID) или выбрать модель напрямую.[/]")
-        console.print("[dim]  📖 https://yandex.cloud/ru/docs/foundation-models/concepts/assistant[/]\n")
+        self.print_link("https://yandex.cloud/ru/docs/foundation-models/concepts/assistant")
+        console.print()
         
         use_agents = questionary.confirm(
             "Использовать готовых AI агентов из консоли YC?",
@@ -298,7 +315,8 @@ class BotCreator:
             else:
                 console.print("\n[dim]  S3 (Object Storage) нужен для хранения истории диалогов.[/]")
                 console.print("[dim]  Скрипт создаст бакет и настроит доступ автоматически.[/]")
-                console.print("[dim]  📖 https://yandex.cloud/ru/docs/storage/quickstart[/]\n")
+                self.print_link("https://yandex.cloud/ru/docs/storage/quickstart")
+                console.print()
                 
                 self.config["create_s3_bucket"] = questionary.confirm(
                     "Создать S3 бакет автоматически?",
