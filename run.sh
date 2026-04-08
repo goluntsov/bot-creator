@@ -58,7 +58,15 @@ print_info() {
 }
 
 print_link() {
-    echo -e "${DIM}  📖 $1${NC}"
+    local url="$1"
+    echo -e "${DIM}  📖 $url${NC}"
+    
+    # Попытка открыть ссылку автоматически
+    if command -v xdg-open &>/dev/null; then
+        xdg-open "$url" &>/dev/null &
+    elif command -v open &>/dev/null; then
+        open "$url" &>/dev/null &
+    fi
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
