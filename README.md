@@ -263,4 +263,4 @@ yc serverless function list
 
 ## License
 
-MIT
+MIT.
