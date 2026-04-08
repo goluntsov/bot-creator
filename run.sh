@@ -261,6 +261,8 @@ check_service_account() {
         # Проверяем не существует ли уже
         if yc iam service-account get "$SA_NAME" &>/dev/null 2>&1; then
             print_ok "Используем существующий: $SA_NAME"
+            # Всегда переназначаем роли, даже если SA существует
+            assign_sa_roles "$SA_NAME"
         else
             print_info "Создаю сервисный аккаунт: $SA_NAME..."
             yc iam service-account create --name "$SA_NAME" --description "Telegram bot service account"
@@ -273,6 +275,8 @@ check_service_account() {
         idx=$((SA_CHOICE - 1))
         SA_NAME="${SA_NAMES[$idx]}"
         print_ok "Выбран: $SA_NAME"
+        # Всегда переназначаем роли для выбранного SA
+        assign_sa_roles "$SA_NAME"
     else
         print_warn "Неверный выбор, использую telegram-bot-sa"
         SA_NAME="telegram-bot-sa"
@@ -280,6 +284,8 @@ check_service_account() {
         if ! yc iam service-account get "$SA_NAME" &>/dev/null 2>&1; then
             print_info "Создаю сервисный аккаунт: $SA_NAME..."
             yc iam service-account create --name "$SA_NAME" --description "Telegram bot service account"
+            assign_sa_roles "$SA_NAME"
+        else
             assign_sa_roles "$SA_NAME"
         fi
     fi
