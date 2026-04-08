@@ -110,12 +110,16 @@ setup_yc_cli() {
         echo ""
         echo -e "  ${BOLD}Yandex Cloud CLI${NC} — инструмент для управления облачными ресурсами"
         echo ""
-        print_link "https://yandex.cloud/ru/docs/cli/quickstart"
-        echo ""
-        echo "  Установка:"
-        echo -e "    ${CYAN}curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash${NC}"
-        echo ""
-        read -p "  Нажмите Enter после установки (или Ctrl+C для выхода)..."
+        
+        read -p "  Установить Yandex Cloud CLI автоматически? [Y/n] " install_yc
+        if [[ "$install_yc" =~ ^[Nn]$ ]]; then
+            print_error "Установка отменена. Установите YC CLI вручную:"
+            echo "    curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash"
+            exit 1
+        fi
+        
+        print_info "Запускаю установку Yandex Cloud CLI..."
+        curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
         
         # Перезагрузка PATH
         export PATH="$HOME/yandex-cloud/bin:$PATH"
